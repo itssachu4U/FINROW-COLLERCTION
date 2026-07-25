@@ -18,7 +18,7 @@ from telegram.error import Forbidden, BadRequest, TimedOut, NetworkError
 BOT_TOKEN = "8913101325:AAEvcfSfI-hJYKVPPvq-ImIHtX96VVzPqxk"
 ADMIN_ID = 7849592882
 APK_PATH = "𝐉𝐚𝐲_𝐜𝐥𝐮𝐛_𝐧𝐮𝐦𝐛𝐚𝐫_𝐩𝐞𝐧𝐞𝐥.apk"
-VOICE_PATH = "VOICEHACK.ogg"
+VOICE_PATH = "VOICE FINROW BITTU.ogg"
 VIDEO_PATH = "FINROW-BITTU.mp4"
 DB_NAME = "users.db"
 # ==========================================
@@ -102,7 +102,7 @@ async def send_welcome_package(user, context: ContextTypes.DEFAULT_TYPE):
 (केवल प्रीमियम उपयोगकर्ताओं के लिए)💎
 (𝟏𝟎𝟎% नुकसान की भरपाई की गारंटी)🧬
 
-♻सहायता के लिए @Hornetlive
+♻सहायता के लिए @WADRELL
 🔴हैक का उपयोग कैसे करें
 https://t.me/+dZWWREbeEkk4NmNl""",
                 )
@@ -119,8 +119,8 @@ https://t.me/+dZWWREbeEkk4NmNl""",
                     caption="""🎙 सदस्य 9X गुना लाभ का प्रमाण 👇🏻
 https://t.me/+dZWWREbeEkk4NmNl
 
-♻सहायता के लिए @hornetlive
-लगातार नंबर पे नंबर जीतना 🤑♻👑""",
+♻सहायता के लिए @WADRELL
+जीवन बदलने वाला ऑडियो ❤️🤑♻👑""",
                 )
         except Exception as e:
             logging.error(f"Voice send error: {e}")
