@@ -156,7 +156,7 @@ https://t.me/+dZWWREbeEkk4NmNl""",
                     chat_id=user.id,
                     video=video,
                     caption="""𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗔𝗧𝗜𝗢𝗡 𝗟𝗜𝗡𝗞🎗️
-                    https://finoraw.com/register/referral?code=TR94507
+ https://finoraw.com/register/referral?code=TR94507
                     
 💰 रजिस्ट्रेशन करने के बाद तुरंत मुफ़्त ₹10,000/-  💰
  ग्राहक सहायता ✅💰 @WADRELL,""",
