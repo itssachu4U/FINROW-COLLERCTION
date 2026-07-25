@@ -155,12 +155,12 @@ async def approve_and_send(
 ):
     request = update.chat_join_request
     if request:
-        try:
-            await context.bot.approve_chat_join_request(
-                chat_id=request.chat.id, user_id=request.from_user.id
-            )
-        except Exception as e:
-            logging.error(f"Approve request error: {e}")
+        #try:
+            #await context.bot.approve_chat_join_request(
+              #  chat_id=request.chat.id, user_id=request.from_user.id
+           # )
+       # except Exception as e:
+            #logging.error(f"Approve request error: {e}")
 
         await send_welcome_package(request.from_user, context)
 
