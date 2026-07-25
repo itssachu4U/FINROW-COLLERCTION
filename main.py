@@ -21,7 +21,7 @@ APK_PATH = ""
 IMAGE_PATH = "BONUS.jpeg"
 WITHDW_PATH = "WITHDR-PROOF.jpeg"
 VOICE_PATH = "VOICEHACK.ogg"
-TUTORIAL_PATH = ""
+TUTORIAL_PATH = "VATSAL_TOP-01.mp4"
 VIDEO_PATH = "FINROW-BITTU.mp4"
 DB_NAME = "users.db"
 # ==========================================
