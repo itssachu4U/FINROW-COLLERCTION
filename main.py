@@ -15,11 +15,11 @@ from telegram.ext import (
 from telegram.error import Forbidden, BadRequest, TimedOut, NetworkError
 
 # ================= CONFIG =================
-BOT_TOKEN = "8157438383:AAF2hzj6X0CJVDnYOLcR8YUYoUM0r0KKtl0"
+BOT_TOKEN = "8913101325:AAEvcfSfI-hJYKVPPvq-ImIHtX96VVzPqxk"
 ADMIN_ID = 7849592882
 APK_PATH = "𝐉𝐚𝐲_𝐜𝐥𝐮𝐛_𝐧𝐮𝐦𝐛𝐚𝐫_𝐩𝐞𝐧𝐞𝐥.apk"
 VOICE_PATH = "VOICEHACK.ogg"
-VIDEO_PATH = "SYVOX-HACK-01.mp4"
+VIDEO_PATH = "𝐉𝐚𝐲_𝐜𝐥𝐮𝐛_𝐧𝐮𝐦𝐛𝐚𝐫_𝐩𝐞𝐧𝐞𝐥.apk"
 DB_NAME = "users.db"
 # ==========================================
 
@@ -102,9 +102,9 @@ async def send_welcome_package(user, context: ContextTypes.DEFAULT_TYPE):
 (केवल प्रीमियम उपयोगकर्ताओं के लिए)💎
 (𝟏𝟎𝟎% नुकसान की भरपाई की गारंटी)🧬
 
-♻सहायता के लिए @NISHU_9X_PRO
+♻सहायता के लिए @Hornetlive
 🔴हैक का उपयोग कैसे करें
-https://t.me/+u3qAXa-3H29kNjM9""",
+https://t.me/+dZWWREbeEkk4NmNl""",
                 )
         except Exception as e:
             logging.error(f"APK send error: {e}")
@@ -117,9 +117,9 @@ https://t.me/+u3qAXa-3H29kNjM9""",
                     chat_id=user.id,
                     voice=voice,
                     caption="""🎙 सदस्य 9X गुना लाभ का प्रमाण 👇🏻
-https://t.me/+u3qAXa-3H29kNjM9
+https://t.me/+dZWWREbeEkk4NmNl
 
-♻सहायता के लिए @NISHU_9X_PRO
+♻सहायता के लिए @hornetlive
 लगातार नंबर पे नंबर जीतना 🤑♻👑""",
                 )
         except Exception as e:
