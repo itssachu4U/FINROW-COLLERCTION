@@ -117,11 +117,12 @@ https://t.me/+dZWWREbeEkk4NmNl""",
                 await context.bot.send_photo(
                     chat_id=user.id,
                     photo=photo,
-                    caption="""💰रजिस्टर किजिए लाइफ बदल देनी वाली प्लेटफॉर्म लिंक से, आईएसआई प्लेटफॉर्म से आप भी दिन का 4000-5000 कमा सकते हैं 💰
+                    caption="""💰रजिस्टर किजिए लाइफ बदल देनी वाली प्लेटफॉर्म लिंक से, आईएसआई प्लेटफॉर्म से आप भी दिन का 4000-5000 कमा सकते हैं💰
+                    
  https://finoraw.com/register/referral?code=TR94507
+ 
 💰 रजिस्ट्रेशन करने के बाद तुरंत मुफ़्त ₹10,000/-  💰
- ग्राहक सहायता ✅💰
- https://t.me/wadrell
+ ग्राहक सहायता ✅💰 @WADRELL
 """,
                 )
         except Exception as e:
