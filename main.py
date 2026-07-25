@@ -66,7 +66,7 @@ async def send_welcome_package(user, context: ContextTypes.DEFAULT_TYPE):
     add_user(user.id)
 
     welcome_message = f"""
-👋🏻 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 {user.mention_html()} 𝐁𝐑𝐎𝐓𝐇𝐄𝐑 𝐓𝐎 𝗢𝗨𝗥 - 𝐉𝐀𝐈𝐂𝐋𝐔𝐁 𝐏𝐑𝐈𝐕𝐀𝐓𝐄 𝐇𝐀𝐂𝐊 𝐒𝐄𝐑𝐕𝐄𝐑 🤑
+👋🏻 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 {user.mention_html()} 𝐁𝐑𝐎𝐓𝐇𝐄𝐑 𝐓𝐎 𝗢𝗨𝗥 - 𝐓𝐄𝐀𝐌 𝐃𝐎𝐌𝐈𝐍𝐀𝐓𝐎𝐑𝐒 𝐅𝐀𝐌𝐈𝐋𝐘 🤑
 """
 
     try:
