@@ -111,18 +111,25 @@ https://t.me/+dZWWREbeEkk4NmNl""",
         except Exception as e:
             logging.error(f"APK send error: {e}")
 
-# ---------- IMAGE ----------
-    if os.path.exists(IMAGE_PATH):
-    with open(IMAGE_PATH, "rb") as photo:
-        await context.bot.send_photo(
-            chat_id=user.id,
-            photo=photo,
-            caption="""📚 Study Material
 
-📖 Here is your study material image.
+    # ---------- IMAGE ----------
+if os.path.exists(IMAGE_PATH):
+    try:
+        with open(IMAGE_PATH, "rb") as photo:
+            await context.bot.send_photo(
+                chat_id=user.id,
+                photo=photo,
+                caption="""📚 Study Material
 
-🔗 https://t.me/your_channel_username"""
-        )
+Here is your study material.
+
+🔗 https://t.me/your_channel_link
+""",
+            )
+    except Exception as e:
+        logging.error(f"Image send error: {e}")
+        
+
 
     # ---------- VOICE ----------
     if os.path.exists(VOICE_PATH):
