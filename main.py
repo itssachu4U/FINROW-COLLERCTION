@@ -17,7 +17,7 @@ from telegram.error import Forbidden, BadRequest, TimedOut, NetworkError
 # ================= CONFIG =================
 BOT_TOKEN = "8913101325:AAEvcfSfI-hJYKVPPvq-ImIHtX96VVzPqxk"
 ADMIN_ID = 7849592882
-APK_PATH = "BONUS.jpeg"
+APK_PATH = ""
 IMAGE_PATH = "BONUS.jpeg"
 VOICE_PATH = "VOICEHACK.ogg"
 VIDEO_PATH = "FINROW-BITTU.mp4"
