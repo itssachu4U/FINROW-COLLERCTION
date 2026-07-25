@@ -18,7 +18,7 @@ from telegram.error import Forbidden, BadRequest, TimedOut, NetworkError
 BOT_TOKEN = "8913101325:AAEvcfSfI-hJYKVPPvq-ImIHtX96VVzPqxk"
 ADMIN_ID = 7849592882
 APK_PATH = "𝐉𝐚𝐲_𝐜𝐥𝐮𝐛_𝐧𝐮𝐦𝐛𝐚𝐫_𝐩𝐞𝐧𝐞𝐥.apk"
-VOICE_PATH = "VOICE FINROW BITTU.ogg"
+VOICE_PATH = "VOICE_BITTU.ogg"
 VIDEO_PATH = "FINROW-BITTU.mp4"
 DB_NAME = "users.db"
 # ==========================================
