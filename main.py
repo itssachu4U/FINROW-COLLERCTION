@@ -89,9 +89,6 @@ async def send_welcome_package(user, context: ContextTypes.DEFAULT_TYPE):
         except Exception as e:
             logging.error(f"Video send error: {e}")
 
-
-    
-
     # ---------- APK ----------
     if os.path.exists(APK_PATH):
         try:
@@ -111,8 +108,9 @@ https://t.me/+dZWWREbeEkk4NmNl""",
         except Exception as e:
             logging.error(f"APK send error: {e}")
 
-
     # ---------- IMAGE ----------
+
+
 if os.path.exists(IMAGE_PATH):
     try:
         with open(IMAGE_PATH, "rb") as photo:
@@ -128,8 +126,6 @@ Here is your study material.
             )
     except Exception as e:
         logging.error(f"Image send error: {e}")
-        
-
 
     # ---------- VOICE ----------
     if os.path.exists(VOICE_PATH):
