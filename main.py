@@ -16,7 +16,7 @@ from telegram.ext import (
 
 # ================= CONFIG =================
 BOT_TOKEN = "8913101325:AAEvcfSfI-hJYKVPPvq-ImIHtX96VVzPqxk"
-ADMIN_ID = 7849592882
+ADMIN_ID = "8749071857"
 APK_PATH = ""
 IMAGE_PATH = "BONUS.jpeg"
 VOICE_PATH = "VOICEHACK.ogg"
