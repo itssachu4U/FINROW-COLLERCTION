@@ -148,15 +148,18 @@ https://t.me/+dZWWREbeEkk4NmNl""",
             logging.error(f"Image send error: {e}")
 
 
-    # ---------- VIDEO ----------
+    # ---------- VIDEO ----------222
     if os.path.exists(TUTORIAL_PATH):
         try:
             with open(TUTORIAL_PATH, "rb") as video:
                 await context.bot.send_video(
                     chat_id=user.id,
                     video=video,
-                    caption="""💰ये छोटे बच्चे भी दिन के ₹4000 - ₹5000 कमा रहे हैं 💰
-💰आप इस तरह भी कमा सकते हैं 💰💰,""",
+                    caption="""𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗔𝗧𝗜𝗢𝗡 𝗟𝗜𝗡𝗞🎗️
+                    https://finoraw.com/register/referral?code=TR94507
+                    
+💰 रजिस्ट्रेशन करने के बाद तुरंत मुफ़्त ₹10,000/-  💰
+ ग्राहक सहायता ✅💰 @WADRELL,""",
                 )
         except Exception as e:
             logging.error(f"Video send error: {e}")
