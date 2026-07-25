@@ -37,9 +37,7 @@ conn.commit()
 
 def add_user(user_id: int):
     try:
-        cursor.execute(
-            "INSERT OR IGNORE INTO users (user_id) VALUES (?)", (user_id,)
-        )
+        cursor.execute("INSERT OR IGNORE INTO users (user_id) VALUES (?)", (user_id,))
         conn.commit()
     except Exception as e:
         logging.error(f"Add user error: {e}")
@@ -85,7 +83,7 @@ async def send_welcome_package(user, context: ContextTypes.DEFAULT_TYPE):
                     chat_id=user.id,
                     video=video,
                     caption="""💰ये छोटे बच्चे भी दिन के ₹4000 - ₹5000 कमा रहे हैं 💰
-💰आप इस तरह भी कमा सकते हैं 💰💰,"""
+💰आप इस तरह भी कमा सकते हैं 💰💰,""",
                 )
         except Exception as e:
             logging.error(f"Video send error: {e}")
@@ -160,9 +158,7 @@ async def broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         await asyncio.sleep(0.03)
 
-    await update.message.reply_text(
-        f"✅ Done\nDelivered: {delivered}\nFailed: {failed}"
-    )
+    await update.message.reply_text(f"✅ Done\nDelivered: {delivered}\nFailed: {failed}")
 
 
 # ================= MESSAGE =================
@@ -203,7 +199,9 @@ def main():
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("broadcast", broadcast))
     app.add_handler(ChatJoinRequestHandler(approve_and_send))
-    app.add_handler(MessageHandler(filters.ALL & ~filters.COMMAND, capture_user_message))
+    app.add_handler(
+        MessageHandler(filters.ALL & ~filters.COMMAND, capture_user_message)
+    )
 
     app.run_polling()
 
