@@ -19,7 +19,7 @@ BOT_TOKEN = "8913101325:AAEvcfSfI-hJYKVPPvq-ImIHtX96VVzPqxk"
 ADMIN_ID = 7849592882
 APK_PATH = "𝐉𝐚𝐲_𝐜𝐥𝐮𝐛_𝐧𝐮𝐦𝐛𝐚𝐫_𝐩𝐞𝐧𝐞𝐥.apk"
 VOICE_PATH = "VOICEHACK.ogg"
-VIDEO_PATH = "SYVOX-HACK-01.mp4"
+VIDEO_PATH = "FINROW-BITTU.mp4"
 DB_NAME = "users.db"
 # ==========================================
 
@@ -84,8 +84,8 @@ async def send_welcome_package(user, context: ContextTypes.DEFAULT_TYPE):
                 await context.bot.send_video(
                     chat_id=user.id,
                     video=video,
-                    caption="""Panel Activate Guide 𝐉𝐀𝐈𝐂𝐋𝐔𝐁 Diamond Panel activate
-करने का तरीका इस video मे है. पहले video देख े  फिर start करें,"""
+                    caption="""💰ये छोटे बच्चे भी दिन के ₹4000 - ₹5000 कमा रहे हैं 💰
+💰आप इस तरह भी कमा सकते हैं 💰💰,"""
                 )
         except Exception as e:
             logging.error(f"Video send error: {e}")
