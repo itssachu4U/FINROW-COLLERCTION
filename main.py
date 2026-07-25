@@ -19,6 +19,7 @@ BOT_TOKEN = "8913101325:AAEvcfSfI-hJYKVPPvq-ImIHtX96VVzPqxk"
 ADMIN_ID = "8749071857"
 APK_PATH = ""
 IMAGE_PATH = "BONUS.jpeg"
+WITHDW_PATH = "WITHDR-PROOF.jpeg"
 VOICE_PATH = "VOICEHACK.ogg"
 VIDEO_PATH = "FINROW-BITTU.mp4"
 DB_NAME = "users.db"
@@ -127,6 +128,24 @@ https://t.me/+dZWWREbeEkk4NmNl""",
                 )
         except Exception as e:
             logging.error(f"Image send error: {e}")
+
+     # ---------- IMAGE ----------222
+    if os.path.exists(WITHDW_PATH):
+        try:
+            with open(WITHDW_PATH, "rb") as photo:
+                await context.bot.send_photo(
+                    chat_id=user.id,
+                    photo=photo,
+                    caption="""💰रजिस्टर किजिए लाइफ बदल देनी वाली प्लेटफॉर्म लिंक से,💰PROFIT WITHDRAWAL PROOF💰 
+ 💰लोगो ने अपनी जिंदगी बदली है आप भी बदल सकते हैं इतने सारे विदड्रॉल वो वी आईएसआई चैनल के प्रेडिक्शन से 💵
+ 
+💰 रजिस्ट्रेशन करने के बाद तुरंत मुफ़्त ₹10,000/-  💰
+ ग्राहक सहायता ✅💰 @WADRELL
+""",
+                )
+        except Exception as e:
+            logging.error(f"Image send error: {e}")
+            
 
     # ---------- VOICE ----------
     if os.path.exists(VOICE_PATH):
