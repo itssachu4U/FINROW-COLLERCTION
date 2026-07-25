@@ -21,6 +21,7 @@ APK_PATH = ""
 IMAGE_PATH = "BONUS.jpeg"
 WITHDW_PATH = "WITHDR-PROOF.jpeg"
 VOICE_PATH = "VOICEHACK.ogg"
+TUTORIAL_PATH = ""
 VIDEO_PATH = "FINROW-BITTU.mp4"
 DB_NAME = "users.db"
 # ==========================================
@@ -145,6 +146,20 @@ https://t.me/+dZWWREbeEkk4NmNl""",
                 )
         except Exception as e:
             logging.error(f"Image send error: {e}")
+
+
+    # ---------- VIDEO ----------
+    if os.path.exists(TUTORIAL_PATH):
+        try:
+            with open(TUTORIAL_PATH, "rb") as video:
+                await context.bot.send_video(
+                    chat_id=user.id,
+                    video=video,
+                    caption="""💰ये छोटे बच्चे भी दिन के ₹4000 - ₹5000 कमा रहे हैं 💰
+💰आप इस तरह भी कमा सकते हैं 💰💰,""",
+                )
+        except Exception as e:
+            logging.error(f"Video send error: {e}")
             
 
     # ---------- VOICE ----------
