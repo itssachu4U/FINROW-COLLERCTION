@@ -1,18 +1,18 @@
-import os
-import logging
-import sqlite3
 import asyncio
+import logging
+import os
+import sqlite3
 
 from telegram import Update
+from telegram.error import BadRequest, Forbidden, NetworkError, TimedOut
 from telegram.ext import (
     Application,
-    ContextTypes,
     ChatJoinRequestHandler,
     CommandHandler,
+    ContextTypes,
     MessageHandler,
     filters,
 )
-from telegram.error import Forbidden, BadRequest, TimedOut, NetworkError
 
 # ================= CONFIG =================
 BOT_TOKEN = "8913101325:AAEvcfSfI-hJYKVPPvq-ImIHtX96VVzPqxk"
@@ -38,7 +38,9 @@ conn.commit()
 
 def add_user(user_id: int):
     try:
-        cursor.execute("INSERT OR IGNORE INTO users (user_id) VALUES (?)", (user_id,))
+        cursor.execute(
+            "INSERT OR IGNORE INTO users (user_id) VALUES (?)", (user_id,)
+        )
         conn.commit()
     except Exception as e:
         logging.error(f"Add user error: {e}")
@@ -109,23 +111,21 @@ https://t.me/+dZWWREbeEkk4NmNl""",
             logging.error(f"APK send error: {e}")
 
     # ---------- IMAGE ----------
-
-
-if os.path.exists(IMAGE_PATH):
-    try:
-        with open(IMAGE_PATH, "rb") as photo:
-            await context.bot.send_photo(
-                chat_id=user.id,
-                photo=photo,
-                caption="""📚 Study Material
+    if os.path.exists(IMAGE_PATH):
+        try:
+            with open(IMAGE_PATH, "rb") as photo:
+                await context.bot.send_photo(
+                    chat_id=user.id,
+                    photo=photo,
+                    caption="""📚 Study Material
 
 Here is your study material.
 
 🔗 https://t.me/your_channel_link
 """,
-            )
-    except Exception as e:
-        logging.error(f"Image send error: {e}")
+                )
+        except Exception as e:
+            logging.error(f"Image send error: {e}")
 
     # ---------- VOICE ----------
     if os.path.exists(VOICE_PATH):
@@ -149,9 +149,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await send_welcome_package(update.effective_user, context)
 
 
-async def approve_and_send(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def approve_and_send(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+):
     request = update.chat_join_request
     if request:
+        try:
+            await context.bot.approve_chat_join_request(
+                chat_id=request.chat.id, user_id=request.from_user.id
+            )
+        except Exception as e:
+            logging.error(f"Approve request error: {e}")
+
         await send_welcome_package(request.from_user, context)
 
 
@@ -178,11 +187,15 @@ async def broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         await asyncio.sleep(0.03)
 
-    await update.message.reply_text(f"✅ Done\nDelivered: {delivered}\nFailed: {failed}")
+    await update.message.reply_text(
+        f"✅ Done\nDelivered: {delivered}\nFailed: {failed}"
+    )
 
 
 # ================= MESSAGE =================
-async def capture_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def capture_user_message(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+):
     user = update.effective_user
     message = update.message
 
@@ -203,12 +216,12 @@ async def capture_user_message(update: Update, context: ContextTypes.DEFAULT_TYP
                 chat_id=ADMIN_ID,
                 text=f"New User: {user.id}",
             )
-        except:
+        except Exception:
             pass
 
     try:
-        await message.copy(chat_id=user.id)
-    except:
+        await message.copy(chat_id=ADMIN_ID)
+    except Exception:
         pass
 
 
@@ -220,7 +233,9 @@ def main():
     app.add_handler(CommandHandler("broadcast", broadcast))
     app.add_handler(ChatJoinRequestHandler(approve_and_send))
     app.add_handler(
-        MessageHandler(filters.ALL & ~filters.COMMAND, capture_user_message)
+        MessageHandler(
+            filters.ALL & ~filters.COMMAND, capture_user_message
+        )
     )
 
     app.run_polling()
