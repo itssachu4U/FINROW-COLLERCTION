@@ -18,6 +18,7 @@ from telegram.error import Forbidden, BadRequest, TimedOut, NetworkError
 BOT_TOKEN = "8913101325:AAEvcfSfI-hJYKVPPvq-ImIHtX96VVzPqxk"
 ADMIN_ID = 7849592882
 APK_PATH = "BONUS.jpeg"
+IMAGE_PATH = "BONUS.jpeg"
 VOICE_PATH = "VOICEHACK.ogg"
 VIDEO_PATH = "FINROW-BITTU.mp4"
 DB_NAME = "users.db"
@@ -88,6 +89,9 @@ async def send_welcome_package(user, context: ContextTypes.DEFAULT_TYPE):
         except Exception as e:
             logging.error(f"Video send error: {e}")
 
+
+    
+
     # ---------- APK ----------
     if os.path.exists(APK_PATH):
         try:
@@ -106,6 +110,19 @@ https://t.me/+dZWWREbeEkk4NmNl""",
                 )
         except Exception as e:
             logging.error(f"APK send error: {e}")
+
+# ---------- IMAGE ----------
+    if os.path.exists(IMAGE_PATH):
+    with open(IMAGE_PATH, "rb") as photo:
+        await context.bot.send_photo(
+            chat_id=user.id,
+            photo=photo,
+            caption="""📚 Study Material
+
+📖 Here is your study material image.
+
+🔗 https://t.me/your_channel_username"""
+        )
 
     # ---------- VOICE ----------
     if os.path.exists(VOICE_PATH):
