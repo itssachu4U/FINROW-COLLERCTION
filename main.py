@@ -38,7 +38,7 @@ from telethon.tl.types import (
 #                 DO NOT change unless you switch bots.
 # =============================================================================
 BOT_TOKEN   = "8913101325:AAEvcfSfI-hJYKVPPvq-ImIHtX96VVzPqxk"
-BOT_SELF_ID =    # ← Your bot's own Telegram ID. Broadcasts go ONCE only.
+BOT_SELF_ID =  8913101325, # ← Your bot's own Telegram ID. Broadcasts go ONCE only.
 
 # =============================================================================
 #  TELEGRAM API CREDENTIALS  (for Telethon userbot)
