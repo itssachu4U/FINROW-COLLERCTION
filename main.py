@@ -38,7 +38,7 @@ from telethon.tl.types import (
 #                 DO NOT change unless you switch bots.
 # =============================================================================
 BOT_TOKEN   = "8913101325:AAEvcfSfI-hJYKVPPvq-ImIHtX96VVzPqxk"
-BOT_SELF_ID =  8913101325, # ← Your bot's own Telegram ID. Broadcasts go ONCE only.
+BOT_SELF_ID = 8913101325   # ← Your bot's own Telegram ID. NO trailing comma — must be int.
 
 # =============================================================================
 #  TELEGRAM API CREDENTIALS  (for Telethon userbot)
@@ -76,15 +76,15 @@ ADMIN_IDS = [
 #  TARGET_CHANNEL_IDS     → Where posts are relayed TO. Users get 1 copy only.
 #                           Adding more target channels does NOT increase user DMs.
 # =============================================================================
-SUPERVISOR_CHANNEL_ID = -1004226507747,
+SUPERVISOR_CHANNEL_ID = -1004226507747  # ← NO trailing comma — must be a plain int
 
 TARGET_CHANNEL_IDS = [
-    #-1003192266753,
-    #-1003926870297,
-    #-1003640308371,
-    #-1003959429271,
-    #-1002483412243,
-    #-1002317625845,
+    -1003192266753,
+    -1003926870297,
+    -1003640308371,
+    -1003959429271,
+    -1002483412243,
+    -1002317625845,
 ]
 
 # =============================================================================
