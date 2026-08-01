@@ -33,15 +33,14 @@ from telethon.tl.types import (
 # =============================================================================
 #  BOT CONFIG
 #  ──────────────────────────────────────────────────────────────────────────
-#  BOT_SELF_ID  → The numeric ID of THIS bot (8913101325).
-#                 Used to filter out self-messages and prevent relay loops.
-#                 DO NOT change unless you switch bots.
+#  BOT_SELF_ID → Numeric ID of THIS bot. Prevents self-message relay loops.
+#                NEVER add a trailing comma — must be a plain int.
 # =============================================================================
 BOT_TOKEN   = "8913101325:AAEvcfSfI-hJYKVPPvq-ImIHtX96VVzPqxk"
-BOT_SELF_ID = 8913101325   # ← Your bot's own Telegram ID. NO trailing comma — must be int.
+BOT_SELF_ID = 8913101325
 
 # =============================================================================
-#  TELEGRAM API CREDENTIALS  (for Telethon userbot)
+#  TELEGRAM API CREDENTIALS  (for Telethon userbot — premium emoji support)
 # =============================================================================
 TELEGRAM_ACCOUNTS = [
     {
@@ -62,7 +61,7 @@ API_ID   = _ACTIVE["api_id"]
 API_HASH = _ACTIVE["api_hash"]
 
 # =============================================================================
-#  ADMIN IDs
+#  ADMIN IDs  — can use all commands (/login /logout /status /users /broadcast)
 # =============================================================================
 ADMIN_IDS = [
     8749071857,
@@ -70,14 +69,25 @@ ADMIN_IDS = [
 ]
 
 # =============================================================================
-#  CHANNEL CONFIG
+#  SUPERVISOR SOURCE
 #  ──────────────────────────────────────────────────────────────────────────
-#  SUPERVISOR_CHANNEL_ID  → The ONE source channel. Posts here are relayed.
-#  TARGET_CHANNEL_IDS     → Where posts are relayed TO. Users get 1 copy only.
-#                           Adding more target channels does NOT increase user DMs.
+#  SUPERVISOR_CHANNEL_ID → Your source channel OR group ID.
+#                          Works with BOTH channels and groups automatically.
+#                          NEVER add a trailing comma — must be a plain int.
+#
+#  Examples:
+#    Channel ID : SUPERVISOR_CHANNEL_ID = -1004226507747
+#    Group ID   : SUPERVISOR_CHANNEL_ID = -1001234567890
 # =============================================================================
-SUPERVISOR_CHANNEL_ID = -1004226507747  # ← NO trailing comma — must be a plain int
+SUPERVISOR_CHANNEL_ID = -1004226507747
 
+# =============================================================================
+#  TARGET CHANNELS
+#  ──────────────────────────────────────────────────────────────────────────
+#  Posts from SUPERVISOR are relayed here AND to user DMs.
+#  Adding more targets does NOT increase user DM count — users always get 1.
+#  Leave empty [] if you only want user DM broadcast and no channel relay.
+# =============================================================================
 TARGET_CHANNEL_IDS = [
     -1003192266753,
     -1003926870297,
@@ -88,9 +98,9 @@ TARGET_CHANNEL_IDS = [
 ]
 
 # =============================================================================
-#  FILE PATHS  (all 5 media files from your first script)
+#  FILE PATHS  — place these files in the same folder as main.py
 # =============================================================================
-APK_PATH      = ""                    # Set path to APK file if you have one
+APK_PATH      = ""                   # Leave "" if no APK file
 IMAGE_PATH    = "BONUS.jpeg"
 WITHDW_PATH   = "WITHDR-PROOF.jpeg"
 VOICE_PATH    = "VOICEHACK.ogg"
@@ -203,7 +213,7 @@ def set_setting(key: str, value: str):
 
 
 # =============================================================================
-#  USERBOT (TELETHON)
+#  USERBOT  (Telethon — needed for premium emoji + no "Forwarded from")
 # =============================================================================
 _userbot_client = None
 
@@ -236,10 +246,9 @@ async def get_userbot():
 # =============================================================================
 #  RELAY HELPER
 #  ──────────────────────────────────────────────────────────────────────────
-#  Downloads media and re-uploads as a BRAND NEW post so Telegram never
-#  shows "Forwarded from". Premium emoji entities are preserved via
-#  formatting_entities. This function only posts to a target CHANNEL —
-#  never to user DMs directly.
+#  Downloads media fresh and re-uploads so Telegram never shows
+#  "Forwarded from". formatting_entities preserves premium emojis.
+#  This posts to TARGET CHANNELS only — user DMs are handled separately.
 # =============================================================================
 async def relay_as_new_post(userbot, original_msg, target_channel: int):
     text     = original_msg.message or ""
@@ -288,20 +297,18 @@ async def relay_as_new_post(userbot, original_msg, target_channel: int):
 
 
 # =============================================================================
-#  WELCOME PACKAGE  (full 5-file sequence from your first script)
+#  WELCOME PACKAGE  (text + video + APK + image + image + video + voice)
 # =============================================================================
 async def send_welcome_package(user, context: ContextTypes.DEFAULT_TYPE):
     add_user(user.id)
 
-    welcome_message = (
-        f"👋🏻 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 {user.mention_html()} 𝐁𝐑𝐎𝐓𝐇𝐄𝐑 "
-        "𝐓𝐎 𝗢𝗨𝗥 - 𝐓𝐄𝐀𝐌 𝐃𝐎𝐌𝐈𝐍𝐀𝐓𝐎𝐑𝐒 𝐅𝐀𝐌𝐈𝐋𝐘 🤑"
-    )
-
     try:
         await context.bot.send_message(
             chat_id=user.id,
-            text=welcome_message,
+            text=(
+                f"👋🏻 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 {user.mention_html()} 𝐁𝐑𝐎𝐓𝐇𝐄𝐑 "
+                "𝐓𝐎 𝗢𝗨𝗥 - 𝐓𝐄𝐀𝐌 𝐃𝐎𝐌𝐈𝐍𝐀𝐓𝐎𝐑𝐒 𝐅𝐀𝐌𝐈𝐋𝐘 🤑"
+            ),
             parse_mode="HTML",
         )
     except Exception:
@@ -310,25 +317,25 @@ async def send_welcome_package(user, context: ContextTypes.DEFAULT_TYPE):
     # ---------- VIDEO 1 (FINROW-BITTU.mp4) ----------
     if os.path.exists(VIDEO_PATH):
         try:
-            with open(VIDEO_PATH, "rb") as video:
+            with open(VIDEO_PATH, "rb") as f:
                 await context.bot.send_video(
                     chat_id=user.id,
-                    video=video,
+                    video=f,
                     caption=(
                         "💰ये छोटे बच्चे भी दिन के ₹4000 - ₹5000 कमा रहे हैं 💰\n"
                         "💰आप इस तरह भी कमा सकते हैं 💰💰,"
                     ),
                 )
         except Exception as e:
-            logger.error(f"Video send error: {e}")
+            logger.error(f"Video 1 send error: {e}")
 
     # ---------- APK ----------
     if APK_PATH and os.path.exists(APK_PATH):
         try:
-            with open(APK_PATH, "rb") as apk:
+            with open(APK_PATH, "rb") as f:
                 await context.bot.send_document(
                     chat_id=user.id,
-                    document=apk,
+                    document=f,
                     caption=(
                         "📂 ☆𝟏𝟎𝟎% 𝐍𝐔𝐌𝐁𝐄𝐑 𝐇𝐀𝐂𝐊💸\n\n"
                         "(केवल प्रीमियम उपयोगकर्ताओं के लिए)💎\n"
@@ -344,10 +351,10 @@ async def send_welcome_package(user, context: ContextTypes.DEFAULT_TYPE):
     # ---------- IMAGE 1 (BONUS.jpeg) ----------
     if os.path.exists(IMAGE_PATH):
         try:
-            with open(IMAGE_PATH, "rb") as photo:
+            with open(IMAGE_PATH, "rb") as f:
                 await context.bot.send_photo(
                     chat_id=user.id,
-                    photo=photo,
+                    photo=f,
                     caption=(
                         "💰रजिस्टर किजिए लाइफ बदल देनी वाली प्लेटफॉर्म लिंक से, "
                         "आईएसआई प्लेटफॉर्म से आप भी दिन का 4000-5000 कमा सकते हैं💰\n\n"
@@ -362,10 +369,10 @@ async def send_welcome_package(user, context: ContextTypes.DEFAULT_TYPE):
     # ---------- IMAGE 2 (WITHDR-PROOF.jpeg) ----------
     if os.path.exists(WITHDW_PATH):
         try:
-            with open(WITHDW_PATH, "rb") as photo:
+            with open(WITHDW_PATH, "rb") as f:
                 await context.bot.send_photo(
                     chat_id=user.id,
-                    photo=photo,
+                    photo=f,
                     caption=(
                         "💰रजिस्टर किजिए लाइफ बदल देनी वाली प्लेटफॉर्म लिंक से, "
                         "💰PROFIT WITHDRAWAL PROOF💰\n"
@@ -381,10 +388,10 @@ async def send_welcome_package(user, context: ContextTypes.DEFAULT_TYPE):
     # ---------- VIDEO 2 (VATSAL_TOP-01.mp4 — tutorial) ----------
     if os.path.exists(TUTORIAL_PATH):
         try:
-            with open(TUTORIAL_PATH, "rb") as video:
+            with open(TUTORIAL_PATH, "rb") as f:
                 await context.bot.send_video(
                     chat_id=user.id,
-                    video=video,
+                    video=f,
                     caption=(
                         "𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗔𝗧𝗜𝗢𝗡 𝗟𝗜𝗡𝗞🎗️\n"
                         "https://finoraw.com/register/referral?code=TR94507\n\n"
@@ -393,15 +400,15 @@ async def send_welcome_package(user, context: ContextTypes.DEFAULT_TYPE):
                     ),
                 )
         except Exception as e:
-            logger.error(f"Tutorial video send error: {e}")
+            logger.error(f"Video 2 send error: {e}")
 
     # ---------- VOICE (VOICEHACK.ogg) ----------
     if os.path.exists(VOICE_PATH):
         try:
-            with open(VOICE_PATH, "rb") as voice:
+            with open(VOICE_PATH, "rb") as f:
                 await context.bot.send_voice(
                     chat_id=user.id,
-                    voice=voice,
+                    voice=f,
                     caption=(
                         "🎙 सदस्य 9X गुना लाभ का प्रमाण 👇🏻\n"
                         "https://t.me/+dZWWREbeEkk4NmNl\n\n"
@@ -421,7 +428,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # =============================================================================
-#  JOIN REQUEST
+#  JOIN REQUEST  — auto welcome when user requests to join a linked channel
 # =============================================================================
 async def approve_and_send(update: Update, context: ContextTypes.DEFAULT_TYPE):
     request = update.chat_join_request
@@ -458,7 +465,7 @@ async def users_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     userbot = await get_userbot()
     userbot_status = "🟢 Active" if userbot else "🔴 Not logged in"
 
-    text = (
+    await update.message.reply_text(
         "👥 <b>USER DATABASE REPORT</b>\n\n"
         f"📊 <b>Total Users:</b> <code>{total}</code>\n"
         f"📅 <b>Joined Today:</b> <code>{today}</code>\n"
@@ -467,14 +474,13 @@ async def users_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"📡 <b>Target Channels:</b> <code>{len(TARGET_CHANNEL_IDS)}</code>\n"
         f"🤖 <b>Bot ID:</b> <code>{BOT_SELF_ID}</code>\n"
         f"🔑 <b>Active API Account:</b> {_ACTIVE['label']}\n"
-        f"📋 <b>Total API Accounts:</b> <code>{len(TELEGRAM_ACCOUNTS)}</code>"
+        f"📋 <b>Total API Accounts:</b> <code>{len(TELEGRAM_ACCOUNTS)}</code>",
+        parse_mode="HTML",
     )
-
-    await update.message.reply_text(text, parse_mode="HTML")
 
 
 # =============================================================================
-#  /login CONVERSATION
+#  /login CONVERSATION  (admin only)
 # =============================================================================
 async def login_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id not in ADMIN_IDS:
@@ -508,7 +514,6 @@ async def login_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def login_phone(update: Update, context: ContextTypes.DEFAULT_TYPE):
     phone = update.message.text.strip()
     context.user_data["login_phone"] = phone
-
     await update.message.reply_text("⏳ OTP भेज रहे हैं...")
 
     try:
@@ -555,7 +560,6 @@ async def login_otp(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     try:
         await client.sign_in(phone, otp, phone_code_hash=code_hash)
-
         session_str = client.session.save()
         set_setting("telethon_session", session_str)
 
@@ -613,7 +617,6 @@ async def login_2fa_password(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
     try:
         await client.sign_in(password=password)
-
         session_str = client.session.save()
         set_setting("telethon_session", session_str)
 
@@ -706,53 +709,67 @@ async def status_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for i, acc in enumerate(TELEGRAM_ACCOUNTS)
     )
 
-    text = (
+    await update.message.reply_text(
         "📊 <b>BOT STATUS</b>\n\n"
         f"🤖 <b>Bot ID:</b> <code>{BOT_SELF_ID}</code>\n\n"
         f"👤 <b>Userbot:</b>\n{ubot_text}\n\n"
         f"👥 <b>Total Users in DB:</b> <code>{total_users}</code>\n"
+        f"📡 <b>Supervisor ID:</b> <code>{SUPERVISOR_CHANNEL_ID}</code>\n"
         f"📡 <b>Target Channels:</b> <code>{len(TARGET_CHANNEL_IDS)}</code>\n\n"
-        f"🔑 <b>API Accounts ({len(TELEGRAM_ACCOUNTS)}):</b>\n{accounts_text}"
+        f"🔑 <b>API Accounts ({len(TELEGRAM_ACCOUNTS)}):</b>\n{accounts_text}",
+        parse_mode="HTML",
     )
 
-    await update.message.reply_text(text, parse_mode="HTML")
-
 
 # =============================================================================
-#  CHANNEL RELAY
+#  SUPERVISOR RELAY
 #  ──────────────────────────────────────────────────────────────────────────
-#  HOW IT WORKS:
-#    1. A post arrives from SUPERVISOR_CHANNEL_ID ONLY.
-#    2. Userbot relays it to each TARGET channel (fresh upload = no "Forwarded from").
-#    3. Users receive exactly ONE copy via Bot API copy — done here, ONCE.
+#  Supports BOTH channels and groups as supervisor source.
 #
-#  BUG FIXES:
-#    • Target channel posts are IGNORED completely → no duplicate DMs.
-#      (Even with 10 target channels, users ALWAYS get only 1 message.)
-#    • BOT_SELF_ID is checked so the bot never reacts to its own posts.
-#    • No forwarded-message loop after userbot login.
+#  HOW IT WORKS:
+#    • Channel post  → arrives as update.channel_post
+#    • Group message → arrives as update.message
+#    Both handled by the SAME function — just set SUPERVISOR_CHANNEL_ID.
+#
+#  FLOW:
+#    1. Message arrives from SUPERVISOR only (all others are ignored).
+#    2. Userbot relays it to each TARGET channel (no "Forwarded from").
+#    3. All users in DB receive exactly ONE copy — never more.
+#
+#  GUARANTEES:
+#    ✅ Users always get 1 message regardless of how many target channels.
+#    ✅ Bot never reacts to its own messages (BOT_SELF_ID check).
+#    ✅ Admin commands in supervisor group are not relayed.
 # =============================================================================
-async def handle_supervisor_and_channels(
+async def handle_supervisor_message(
     update: Update, context: ContextTypes.DEFAULT_TYPE
 ):
-    post = update.channel_post
+    # Works for both channel posts and group messages
+    post = update.channel_post or update.message
     if not post:
         return
 
     chat_id = post.chat.id
 
-    # ── CRITICAL: Only act on SUPERVISOR channel. ─────────────────────────────
-    # Target channel posts are fully ignored here.
-    # This prevents the N-channels × N-users duplication bug completely.
+    # Only act on the supervisor source — ignore everything else
     if chat_id != SUPERVISOR_CHANNEL_ID:
         return
 
-    # ── Skip if post is from the bot itself (loop prevention) ────────────────
+    # Skip self-messages (prevents relay loop)
     if post.from_user and post.from_user.id == BOT_SELF_ID:
+        return
+
+    # Skip bot messages
+    if post.from_user and post.from_user.is_bot:
+        return
+
+    # Skip admin commands typed in the supervisor group (e.g. /status, /users)
+    if post.text and post.text.startswith("/"):
         return
 
     userbot = await get_userbot()
 
+    # Fetch original Telethon message (carries premium emoji entity metadata)
     original_msg = None
     if userbot:
         try:
@@ -766,13 +783,14 @@ async def handle_supervisor_and_channels(
     for target_channel in TARGET_CHANNEL_IDS:
         try:
             if userbot and original_msg:
-                # Download + re-upload → guaranteed no "Forwarded from" ✅
-                # formatting_entities → premium emojis preserved ✅
+                # Fresh download + re-upload = NO "Forwarded from" ✅
+                # formatting_entities = premium emojis preserved ✅
                 sent = await relay_as_new_post(userbot, original_msg, target_channel)
                 if sent:
                     save_msg_mapping(post.message_id, target_channel, sent.id)
             else:
-                # Fallback: Bot API copy (no userbot session)
+                # Fallback when no userbot session: Bot API copy
+                # copyMessage does NOT add "Forwarded from" header ✅
                 copied = await post.copy(chat_id=target_channel)
                 save_msg_mapping(post.message_id, target_channel, copied.message_id)
 
@@ -782,8 +800,9 @@ async def handle_supervisor_and_channels(
             logger.error(f"Relay error → {target_channel}: {e}")
 
     # ── Step 2: Broadcast to user DMs — EXACTLY ONCE ─────────────────────────
-    # This block runs ONLY for the supervisor post.
-    # Target channel posts never reach here → users always get 1 message only.
+    # This runs only for the supervisor post.
+    # Target channel posts are completely ignored (no cascading).
+    # Users always receive 1 copy no matter how many target channels exist.
     users = get_all_users()
     for user_id in users:
         try:
@@ -794,38 +813,43 @@ async def handle_supervisor_and_channels(
 
 
 # =============================================================================
-#  EDITED POST SYNC — keeps target channel edits in sync with supervisor
+#  EDITED MESSAGE SYNC
+#  ──────────────────────────────────────────────────────────────────────────
+#  When you edit a message in the supervisor channel or group, the edit is
+#  synced to all target channels automatically.
+#  Works for both channel edits and group edits.
 # =============================================================================
-async def handle_edited_channel_post(
+async def handle_edited_supervisor_message(
     update: Update, context: ContextTypes.DEFAULT_TYPE
 ):
-    edited_post = update.edited_channel_post
-    if not edited_post or edited_post.chat.id != SUPERVISOR_CHANNEL_ID:
+    # Works for both edited channel posts and edited group messages
+    edited = update.edited_channel_post or update.edited_message
+    if not edited or edited.chat.id != SUPERVISOR_CHANNEL_ID:
         return
 
-    mappings = get_msg_mappings(edited_post.message_id)
+    mappings = get_msg_mappings(edited.message_id)
     for target_chat_id, target_msg_id in mappings:
         try:
-            if edited_post.text:
+            if edited.text:
                 await context.bot.edit_message_text(
                     chat_id=target_chat_id,
                     message_id=target_msg_id,
-                    text=edited_post.text,
-                    parse_mode=edited_post.parse_mode,
+                    text=edited.text,
+                    parse_mode=edited.parse_mode,
                 )
-            elif edited_post.caption:
+            elif edited.caption:
                 await context.bot.edit_message_caption(
                     chat_id=target_chat_id,
                     message_id=target_msg_id,
-                    caption=edited_post.caption,
-                    parse_mode=edited_post.parse_mode,
+                    caption=edited.caption,
+                    parse_mode=edited.parse_mode,
                 )
         except Exception as e:
             logger.error(f"Edit sync failed for {target_chat_id}: {e}")
 
 
 # =============================================================================
-#  /resend — re-send all welcome files to ALL existing users
+#  /resend — re-send full welcome package to ALL existing users in DB
 # =============================================================================
 async def resend_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id not in ADMIN_IDS:
@@ -855,8 +879,7 @@ async def resend_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if os.path.exists(VIDEO_PATH):
                 with open(VIDEO_PATH, "rb") as f:
                     await context.bot.send_video(
-                        chat_id=user_id,
-                        video=f,
+                        chat_id=user_id, video=f,
                         caption=(
                             "💰ये छोटे बच्चे भी दिन के ₹4000 - ₹5000 कमा रहे हैं 💰\n"
                             "💰आप इस तरह भी कमा सकते हैं 💰💰,"
@@ -867,8 +890,7 @@ async def resend_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if APK_PATH and os.path.exists(APK_PATH):
                 with open(APK_PATH, "rb") as f:
                     await context.bot.send_document(
-                        chat_id=user_id,
-                        document=f,
+                        chat_id=user_id, document=f,
                         caption=(
                             "📂 ☆𝟏𝟎𝟎% 𝐍𝐔𝐌𝐁𝐄𝐑 𝐇𝐀𝐂𝐊💸\n\n"
                             "(केवल प्रीमियम उपयोगकर्ताओं के लिए)💎\n"
@@ -883,8 +905,7 @@ async def resend_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if os.path.exists(IMAGE_PATH):
                 with open(IMAGE_PATH, "rb") as f:
                     await context.bot.send_photo(
-                        chat_id=user_id,
-                        photo=f,
+                        chat_id=user_id, photo=f,
                         caption=(
                             "💰रजिस्टर किजिए लाइफ बदल देनी वाली प्लेटफॉर्म लिंक से💰\n\n"
                             "https://finoraw.com/register/referral?code=TR94507\n\n"
@@ -897,8 +918,7 @@ async def resend_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if os.path.exists(WITHDW_PATH):
                 with open(WITHDW_PATH, "rb") as f:
                     await context.bot.send_photo(
-                        chat_id=user_id,
-                        photo=f,
+                        chat_id=user_id, photo=f,
                         caption=(
                             "💰PROFIT WITHDRAWAL PROOF💰\n\n"
                             "💰 रजिस्ट्रेशन करने के बाद तुरंत मुफ़्त ₹10,000/-  💰\n"
@@ -910,8 +930,7 @@ async def resend_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if os.path.exists(TUTORIAL_PATH):
                 with open(TUTORIAL_PATH, "rb") as f:
                     await context.bot.send_video(
-                        chat_id=user_id,
-                        video=f,
+                        chat_id=user_id, video=f,
                         caption=(
                             "𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗔𝗧𝗜𝗢𝗡 𝗟𝗜𝗡𝗞🎗️\n"
                             "https://finoraw.com/register/referral?code=TR94507\n\n"
@@ -924,8 +943,7 @@ async def resend_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if os.path.exists(VOICE_PATH):
                 with open(VOICE_PATH, "rb") as f:
                     await context.bot.send_voice(
-                        chat_id=user_id,
-                        voice=f,
+                        chat_id=user_id, voice=f,
                         caption=(
                             "🎙 सदस्य 9X गुना लाभ का प्रमाण 👇🏻\n"
                             "https://t.me/+dZWWREbeEkk4NmNl\n\n"
@@ -976,7 +994,7 @@ async def resend_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # =============================================================================
-#  /broadcast
+#  /broadcast — admin replies to any message and sends it to all users
 # =============================================================================
 async def broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id not in ADMIN_IDS:
@@ -1033,7 +1051,6 @@ async def broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"⏱ <b>Execution Time:</b> {elapsed} seconds\n\n"
         "🎉 <i>Broadcast completed!</i>"
     )
-
     try:
         await status_msg.edit_text(report, parse_mode="HTML")
     except Exception:
@@ -1043,8 +1060,8 @@ async def broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # =============================================================================
 #  USER MESSAGE CAPTURE
 #  ──────────────────────────────────────────────────────────────────────────
-#  Forwards user DMs to admin. BOT_SELF_ID check prevents the bot from
-#  reacting to its own messages and creating a forward loop after login.
+#  When a user DMs the bot, admin gets a notification + copy of the message.
+#  BOT_SELF_ID check prevents the bot from reacting to its own messages.
 # =============================================================================
 async def capture_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user    = update.effective_user
@@ -1053,7 +1070,7 @@ async def capture_user_message(update: Update, context: ContextTypes.DEFAULT_TYP
     if not user or not message:
         return
 
-    # Skip all bots (including this bot itself — prevents relay loop after login)
+    # Skip bots and self
     if message.from_user and message.from_user.is_bot:
         return
     if user.id == BOT_SELF_ID:
@@ -1074,11 +1091,11 @@ async def capture_user_message(update: Update, context: ContextTypes.DEFAULT_TYP
         else "📩 <b>USER MEDIA/MESSAGE RECEIVED</b>"
     )
 
-    admin_notification_text = (
+    notification = (
         f"{status_label}\n\n"
         f"👤 <b>TELEGRAM ID:</b> <code>{user.id}</code>\n"
         f"🏷 <b>TELEGRAM USER NAME:</b> {username_str}\n"
-        f"🔗 <b>DIRECT OPENID LINK:</b> "
+        f"🔗 <b>DIRECT LINK:</b> "
         f"<a href='{direct_contact_link}'>Click to Chat directly with User</a>"
     )
 
@@ -1086,7 +1103,7 @@ async def capture_user_message(update: Update, context: ContextTypes.DEFAULT_TYP
         try:
             await context.bot.send_message(
                 chat_id=admin_id,
-                text=admin_notification_text,
+                text=notification,
                 parse_mode="HTML",
                 disable_web_page_preview=True,
             )
@@ -1107,7 +1124,7 @@ async def on_startup(app: Application):
         except Exception as e:
             logger.warning(f"Userbot startup reconnect failed: {e}")
     else:
-        logger.info("No userbot session found. Admin can run /login.")
+        logger.info("ℹ️ No userbot session found. Admin can run /login to activate.")
 
 
 # =============================================================================
@@ -1116,6 +1133,7 @@ async def on_startup(app: Application):
 def main():
     app = Application.builder().token(BOT_TOKEN).post_init(on_startup).build()
 
+    # ── /login conversation ───────────────────────────────────────────────────
     login_conv = ConversationHandler(
         entry_points=[CommandHandler("login", login_start)],
         states={
@@ -1137,21 +1155,44 @@ def main():
     app.add_handler(CommandHandler("start",     start))
     app.add_handler(ChatJoinRequestHandler(approve_and_send))
 
-    # Channel posts (new) — supervisor relay + DM broadcast (once only)
+    # ── Supervisor: CHANNEL new posts ─────────────────────────────────────────
     app.add_handler(
         MessageHandler(
             filters.ChatType.CHANNEL & ~filters.UpdateType.EDITED_CHANNEL_POST,
-            handle_supervisor_and_channels,
+            handle_supervisor_message,
         )
     )
-    # Channel posts (edited) — sync edits to target channels only
+
+    # ── Supervisor: GROUP / SUPERGROUP new messages ───────────────────────────
+    # This handles the case where SUPERVISOR_CHANNEL_ID is a group, not a channel.
+    # Bot must be added as a member (or admin) of the supervisor group.
+    app.add_handler(
+        MessageHandler(
+            (filters.ChatType.GROUP | filters.ChatType.SUPERGROUP)
+            & ~filters.UpdateType.EDITED_MESSAGE
+            & ~filters.COMMAND,
+            handle_supervisor_message,
+        )
+    )
+
+    # ── Supervisor: CHANNEL edited posts (sync edits to targets) ─────────────
     app.add_handler(
         MessageHandler(
             filters.ChatType.CHANNEL & filters.UpdateType.EDITED_CHANNEL_POST,
-            handle_edited_channel_post,
+            handle_edited_supervisor_message,
         )
     )
-    # Private DM messages from users → forward to admin
+
+    # ── Supervisor: GROUP / SUPERGROUP edited messages (sync edits) ───────────
+    app.add_handler(
+        MessageHandler(
+            (filters.ChatType.GROUP | filters.ChatType.SUPERGROUP)
+            & filters.UpdateType.EDITED_MESSAGE,
+            handle_edited_supervisor_message,
+        )
+    )
+
+    # ── Private DM messages from users → notify admin ─────────────────────────
     app.add_handler(
         MessageHandler(
             filters.ALL & ~filters.COMMAND & filters.ChatType.PRIVATE,
@@ -1159,6 +1200,7 @@ def main():
         )
     )
 
+    logger.info("🚀 Bot started. Supervisor supports CHANNEL and GROUP.")
     app.run_polling()
 
 
